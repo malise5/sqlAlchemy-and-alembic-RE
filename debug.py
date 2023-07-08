@@ -39,4 +39,10 @@ if __name__ == '__main__':
     names = [name.name for name in pets]
     print(names)
 
+    # filter by temparemnt wirh session.query and filter
+    filter_by_temperament = session.query(
+        Pet).filter(Pet.temperament.like("%relaxed%"))
+
+    # 🔼 UPDATE
+
     ipdb.set_trace()
