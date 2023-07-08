@@ -1,0 +1,7 @@
+        After settin Up the Model
+1. Run the alembic init migrations
+2.inside the alembic.init.migrations setup:
+    - sqlalchemy.url = sqlite:///datbase.db
+    -import from Model import Base
+    -set target_metadata = Base.metadata
+3. Genarate a migration by running "alembic revision --autogenerate -m "Added Pet model""
