@@ -3,7 +3,7 @@ import ipdb
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from model import (Base, Pet, Owner)
+from model import (Base, Pet, Owner, Handler, Job)
 
 #  ==============================================QUERY=============================================================
 
@@ -38,6 +38,17 @@ if __name__ == '__main__':
     # print owner
     print([owner for owner in pet_owner])
 
+    #  ============================================Many-Many===============================================================
 
-#  ============================================dEBUG===============================================================
+    # get first handle
+    first_handler = session.query(Handler).first()
+
+    # grab the handler_job
+    handler_jobs = session.query(Job).filter_by(id=first_handler.id)
+
+    # print handlers_jobs
+    print("=======this handler_job ==========")
+    print([job for job in handler_jobs])
+
+    #  ============================================dEBUG===============================================================
     ipdb.set_trace()

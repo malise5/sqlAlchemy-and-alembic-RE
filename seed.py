@@ -4,7 +4,7 @@ from faker import Faker
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from model import Pet, Owner
+from model import Pet, Owner, Handler, Job
 
 if __name__ == '__main__':
 
@@ -18,6 +18,8 @@ if __name__ == '__main__':
     # Add delete methods to clear in tables
     session.query(Pet).delete()
     session.query(Owner).delete()
+    session.query(Handler).delete()
+    session.query(Job).delete()
 
     # Intialize faker
     faker = Faker()
@@ -77,6 +79,52 @@ if __name__ == '__main__':
 
             # Append to pets
             pets.append(pet)
+
+    # create a list of handlers
+    handlers = []
+
+    # create a loop that itarates 50 times
+    for _ in range(50):
+        # 3creating Owner
+        handler = Handler(
+            name=f"{faker.first_name()} {faker.last_name()}",
+            email=faker.email(),
+            phone=random.randint(1000000000, 9999999999),
+            hourly_rate=random.uniform(25.50, 80.50)
+        )
+        # commit and save owner one at a time so we maintain the owner Id
+        session.add(handler)
+        session.commit()
+
+        # Append to owners
+        handlers.append(handler)
+
+    # create a list of request: "Walk", "Drop-in", "Boarding"
+    requests = ["Walk", "Drop-in", "Boarding"]
+
+    # create an empty array and set it to jobs
+    jobs = []
+
+    # creating a for loop iterates over the handlers array
+    for handler in handlers:
+        # create a for loop that iterates 1 - 10 times
+        for _ in range(random.randint(1, 10)):
+
+            # use faker to create job, the request list and pet list
+            job = Job(
+                request=random.choice(requests),
+                data=faker.date_this_year(),
+                notes=faker.sentence(),
+                fee=handler.hourly_rate,
+                handler_id=handler.id,
+                pet_id=random.choice(pets).id
+            )
+
+            # Append to pets
+            jobs.append(job)
+
+            # commit and save pet
+            session.bulk_save_objects(jobs)
 
     session.commit()
     session.close()

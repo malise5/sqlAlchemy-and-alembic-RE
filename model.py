@@ -114,6 +114,7 @@ class Job(Base):
             id: {self.id},
             Request: {self.request},
             Data: {self.data},
+            Notes: {self.notes},
             Pet_id: {self.pet_id},
             Handler_id: {self.handler_id}
         """
