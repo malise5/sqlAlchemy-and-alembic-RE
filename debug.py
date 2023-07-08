@@ -5,6 +5,8 @@ from sqlalchemy.orm import sessionmaker
 
 from model import (Base, Pet)
 
+#  ==============================================QUERY=============================================================
+
 
 if __name__ == '__main__':
 
@@ -16,7 +18,10 @@ if __name__ == '__main__':
     Session = sessionmaker(bind=egine)
     session = Session()
 
+#  ==============================================CRUD=============================================================
+
     # ✅ CREATE
+
     rose = Pet(name="rose", species="cat", breed="domestic longhair",
                temperament="relaxed", owner_id=1)
     spot = Pet(name="spot", species="dog", breed="german-shepherd",
@@ -30,7 +35,9 @@ if __name__ == '__main__':
     session.bulk_save_objects([rose, spot, scooby])
     session.commit()
 
-    # 🐪 Read
+#  ===========================================================================================================
+
+    # 🐪 READ
     # retrieving all Pets
     pets = session.query(Pet)
     # prints all the pets
@@ -42,7 +49,33 @@ if __name__ == '__main__':
     # filter by temparemnt wirh session.query and filter
     filter_by_temperament = session.query(
         Pet).filter(Pet.temperament.like("%relaxed%"))
-
+#  ===========================================================================================================
     # 🔼 UPDATE
 
+    # update the first pet
+    # first = session.query(Pet).first()
+    # first.name = "Kude"
+    # session.commit()
+
+    # update all the Pets
+    # pets = session.query(Pet).first()
+    # pets.update({Pet.temperament: "cool"})
+    # session.commit()
+
+#  ===========================================================================================================
+
+    # 🙇 DELETE
+
+    # Delete one item of the first pet
+    # first = session.query(Pet).first()
+    # first.delete()
+    # session.commit()
+
+    # delete all
+    # pets = session.query(Pet)
+    # pets.delete()
+    # session.commit()
+
+
+#  ============================================dEBUG===============================================================
     ipdb.set_trace()
