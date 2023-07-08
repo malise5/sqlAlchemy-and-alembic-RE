@@ -15,6 +15,8 @@ class Pet(Base):
     species = Column(String())
     breed = Column(String())
     temperament = Column(String())
+
+    # Add Foreign Key (owner's.id) to owner_id
     owner_id = Column(Integer())
 
     def __repr__(self):
