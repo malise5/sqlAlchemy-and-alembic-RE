@@ -57,3 +57,6 @@ class Owner(Base):
             Phone: {self.phone},
             Address: {self.address}
         """
+
+    # run => 'alembic revision --autogenerate -m "added table"
+    # run => alembic upgrade head
