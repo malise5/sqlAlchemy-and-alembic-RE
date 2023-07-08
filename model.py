@@ -60,3 +60,60 @@ class Owner(Base):
 
     # run => 'alembic revision --autogenerate -m "added table"
     # run => alembic upgrade head
+
+
+# =================================Handler Class Table=============================================================
+# Many to Many Association
+
+# Pet-< Jobs >- Handlers
+
+
+class Handler(Base):
+    __tablename__ = "handlers"
+    __table_args__ = (PrimaryKeyConstraint('id'), )
+
+    id = Column(Integer())
+    name = Column(String())
+    email = Column(String())
+    phone = Column(Integer())
+    hourly_rate = Column(Float())
+
+    def __repr__(self):
+        return f"""
+            id: {self.id},
+            Name: {self.name},
+            Email: {self.email},
+            Phone: {self.phone},
+            Hourly_rate: {self.hourly_rate}
+        """
+
+# =================================Job Class Table=============================================================
+# Many to Many Association
+
+# Pet-< Jobs >- Handlers
+
+
+class Job(Base):
+    __tablename__ = "jobs"
+    __table_args__ = (PrimaryKeyConstraint('id'), )
+
+    id = Column(Integer())
+    request = Column(String())
+    data = Column(Date())
+    notes = Column(String())
+    fee = Column(Float())
+    pet_id = Column(Integer(), ForeignKey('pets.id'))
+    handler_id = Column(Integer(), ForeignKey('handlers.id'))
+
+    # Association the models relationship (NodelHere, backref=backref(tableName))
+    pet = relationship("Pet", backref=backref("pets"))
+    handler = relationship("Handler", backref=backref("handlers"))
+
+    def __repr__(self):
+        return f"""
+            id: {self.id},
+            Request: {self.request},
+            Data: {self.data},
+            Pet_id: {self.pet_id},
+            Handler_id: {self.handler_id}
+        """
