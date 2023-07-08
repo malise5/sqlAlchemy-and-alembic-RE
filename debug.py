@@ -71,7 +71,7 @@ if __name__ == '__main__':
     # first.delete()
     # session.commit()
 
-    # delete all
+    # delete allll
     # pets = session.query(Pet)
     # pets.delete()
     # session.commit()
