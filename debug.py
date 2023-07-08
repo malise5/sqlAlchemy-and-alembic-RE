@@ -3,7 +3,7 @@ import ipdb
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from model import (Base, Pet)
+from model import (Base, Pet, Owner)
 
 #  ==============================================QUERY=============================================================
 
@@ -18,63 +18,25 @@ if __name__ == '__main__':
     Session = sessionmaker(bind=egine)
     session = Session()
 
-#  ==============================================CRUD=============================================================
+    # ome to Many - Testing
 
-    # ✅ CREATE
+    # Getting an Owners Pets
+    first_owner = session.query(Owner).first()
 
-    rose = Pet(name="rose", species="cat", breed="domestic longhair",
-               temperament="relaxed", owner_id=1)
-    spot = Pet(name="spot", species="dog", breed="german-shepherd",
-               temperament="playful", owner_id=1)
-    scooby = Pet(name="scooby", species="rabbit", breed="belgium-knight",
-                 temperament="mischevious", owner_id=1)
+    # get Owners pets from pet
+    owners_pets = session.query(Pet).filter_by(id=first_owner.id)
 
-    # session.add(rose)
-    # session.add(spot)
-    # session.add(scooby)
-    session.bulk_save_objects([rose, spot, scooby])
-    session.commit()
+    # print owners pet
+    print([pet for pet in owners_pets])
 
-#  ===========================================================================================================
+    # Getting a pets owner
+    # grab first pet
+    first_pet = session.query(Pet).first()
+    # get the owner assiciated with the pet
+    pet_owner = session.query(Owner).filter_by(id=first_pet.owner_id)
 
-    # 🐪 READ
-    # retrieving all Pets
-    pets = session.query(Pet)
-    # prints all the pets
-    print([pet for pet in pets])
-    # print all the names
-    names = [name.name for name in pets]
-    print(names)
-
-    # filter by temparemnt wirh session.query and filter
-    filter_by_temperament = session.query(
-        Pet).filter(Pet.temperament.like("%relaxed%"))
-#  ===========================================================================================================
-    # 🔼 UPDATE
-
-    # update the first pet
-    # first = session.query(Pet).first()
-    # first.name = "Kude"
-    # session.commit()
-
-    # update all the Pets
-    # pets = session.query(Pet).first()
-    # pets.update({Pet.temperament: "cool"})
-    # session.commit()
-
-#  ===========================================================================================================
-
-    # 🙇 DELETE
-
-    # Delete one item of the first pet
-    # first = session.query(Pet).first()
-    # first.delete()
-    # session.commit()
-
-    # delete allll
-    # pets = session.query(Pet)
-    # pets.delete()
-    # session.commit()
+    # print owner
+    print([owner for owner in pet_owner])
 
 
 #  ============================================dEBUG===============================================================

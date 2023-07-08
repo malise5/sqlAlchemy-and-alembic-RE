@@ -53,5 +53,30 @@ if __name__ == '__main__':
         # Append to owners
         owners.append(owner)
 
+    # create empty pets array
+    pets = []
+
+    # 3create a loop that iterates over the owners
+    for owner in owners:
+        # create a for loop that iterates 1 - 3 times
+        for _ in range(random.randint(1, 3)):
+            # use faker and the species, cat breeds, dog breeds and temperament list to create a pet
+            rand_species = random.choice(species)
+
+            pet = Pet(
+                name=faker.name(),
+                species=rand_species,
+                breed=random.choice(
+                    cat_breeds) if rand_species == "cat" else random.choice(dog_breeds),
+                temperament=random.choice(temperaments),
+                owner_id=owner.id
+            )
+            # commit and save pet
+            session.add(pet)
+            session.commit()
+
+            # Append to pets
+            pets.append(pet)
+
     session.commit()
     session.close()
