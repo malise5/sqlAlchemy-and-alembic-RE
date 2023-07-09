@@ -55,7 +55,7 @@ class CastMember(db.Model, SerializerMixin):
         db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
     production_id = db.Column(db.Integer, db.ForeignKey('productions.id'))
     # production = db.relationship('Production', backref=db.backref('cast_members', lazy=True))
-    serialize_rules = ('-production.cast_member', )
+    serialize_rules = ('-production.cast_members', )
 
     def __repr__(self):
         return f"""
