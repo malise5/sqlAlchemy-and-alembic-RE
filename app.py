@@ -12,6 +12,6 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# 🤪  setUp migration
+# 🤪  setUp migration and initialize instance with 'db.init)app(app)
 migrate = Migrate(app, db)
 db.init_app(app)
