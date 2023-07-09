@@ -8,6 +8,12 @@ ipdb = "*"
 sqlalchemy = "*"
 alembic = "*"
 faker = "*"
+flask = "*"
+flask-sqlalchemy = "*"
+jsonify = "*"
+flask-migrate = "*"
+sqlalchemy-serializer = "*"
+importlib-resources = "*"
 
 [dev-packages]
 ipdb = "*"
