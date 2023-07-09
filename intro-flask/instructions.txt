@@ -1,0 +1,8 @@
+To run the flask app and set prot:
+    export FLASK_APP=app.py                                                 ✔  flask-QBaSk9aG  
+    export FLASK_RUN_PORT=5555                                              ✔  flask-QBaSk9aG  
+
+To initiate and create database:
+    flask db init 
+    flask db revision --autogenerate -m "Created Production Table"
+    flask db upgrade
