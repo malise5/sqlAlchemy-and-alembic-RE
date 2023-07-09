@@ -100,6 +100,24 @@ class CastMembers(Resource):
         )
         return response
 
+    def post(self):
+        response_json = request.get_json()
+        new_cast_member = CastMember(
+            name=response_json['name'],
+            role=response_json['role'],
+            production_id=response_json['production_id']
+        )
+        db.session.add(new_cast_member)
+        db.session.commit()
+
+        new_response = new_cast_member.to_dict()
+
+        response = make_response(
+            new_response,
+            201
+        )
+        return response
+
 
 api.add_resource(CastMembers, "/castmembers")
 
