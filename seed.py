@@ -1,10 +1,10 @@
 from app import app
-from models import db, Production
+from models import db, Production, CastMember
 
 
 with app.app_context():
     Production.query.delete()
-    print("Seeeding.....🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 ")
+    print("Seeeding Productions.....🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 ")
 
     # Array of productions
     productions = []
@@ -29,4 +29,61 @@ with app.app_context():
 
     # 3add all the products to db session
     db.session.add_all(productions)
+    db.session.commit()
+
+# ===================================================CASTMEMEBER SEED=================================================
+    # Delete existing cast member data
+    CastMember.query.delete()
+
+    print("Seeding CastMembers.....🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 ")
+
+    # Array of cast members
+    cast_members = []
+
+    cm1 = CastMember(
+        name='Actor 1',
+        role='Role 1',
+        production_id=1
+    )
+    cast_members.append(cm1)
+
+    cm2 = CastMember(
+        name='Actor 2',
+        role='Role 2',
+        production_id=1
+    )
+    cast_members.append(cm2)
+
+    cm3 = CastMember(
+        name='Actor 3',
+        role='Role 3',
+        production_id=2
+    )
+    cast_members.append(cm3)
+
+    cm4 = CastMember(
+        name='Actor 4',
+        role='Role 4',
+        production_id=2
+    )
+    cast_members.append(cm4)
+
+    cm5 = CastMember(
+        name='Actor 5',
+        role='Role 5',
+        production_id=3
+    )
+    cast_members.append(cm5)
+
+    cm6 = CastMember(
+        name='Actor 6',
+        role='Role 6',
+        production_id=3
+    )
+    cast_members.append(cm6)
+
+    print("Finished.....🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 ")
+
+    # Add all the cast members to the db session
+    db.session.add_all(cast_members)
     db.session.commit()

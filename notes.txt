@@ -1,0 +1,117 @@
+#QUESTION:
+
+=================================================================================================================
+what is the difference between this: 
+
+class Productions(Resource):
+    def get(self):
+        production_list = [{
+            "title": production.title,
+            "genre": production.genre,
+            "Budget": production.budget,
+            "Image": production.image,
+            "Director": production.director,
+            "director": production.director,
+            "Description": production.description,
+            "Ongoing": production.ongoing,
+        } for production in Production.query.all()]
+
+        response = make_response(
+            production_list, 200
+        )
+        return response
+
+    # creating path
+api.add_resource(Productions, "/productions") 
+=================================================================================================================
+
+and this: 
+=================================================================================================================
+
+@app.route('/productions/<string:title>')
+def production(title):
+    production = Production.query.filter(Production.title == title).first()
+    production_response = {
+        "title": production.title,
+        "genre": production.genre,
+        "Budget": production.budget,
+        "Image": production.image,
+        "Director": production.director,
+        "director": production.director,
+        "Description": production.description,
+        "Ongoing": production.ongoing,
+    }
+
+    response = make_response(
+        jsonify(production_response), 200
+    )
+
+    return response
+
+The main difference between the two code snippets is the approach to defining routes and handling requests in Flask.
+
+===================================================#ANSWER:================================================================
+
+
+class Productions(Resource):
+    def get(self):
+        production_list = [{
+            "title": production.title,
+            "genre": production.genre,
+            "Budget": production.budget,
+            "Image": production.image,
+            "Director": production.director,
+            "director": production.director,
+            "Description": production.description,
+            "Ongoing": production.ongoing,
+        } for production in Production.query.all()]
+
+        response = make_response(
+            production_list, 200
+        )
+        return response
+
+# creating path
+api.add_resource(Productions, "/productions") 
+
+Class-based Resource (Productions):
+
+This approach utilizes the Resource class from the flask_restful module, which is designed for building RESTful APIs in Flask.
+The Productions class is a subclass of Resource and defines the HTTP methods (e.g., get, post, put, delete) as class methods.
+In the get method, a list of production objects is retrieved from the database using Production.query.all(). 
+The attributes of each production are then extracted and stored in a list of dictionaries (production_list).
+The make_response function is used to create an HTTP response with the production_list as the response body. 
+The response is returned to the client.
+
+=================================================================================================================
+
+
+@app.route('/productions/<string:title>')
+def production(title):
+    production = Production.query.filter(Production.title == title).first()
+    production_response = {
+        "title": production.title,
+        "genre": production.genre,
+        "Budget": production.budget,
+        "Image": production.image,
+        "Director": production.director,
+        "director": production.director,
+        "Description": production.description,
+        "Ongoing": production.ongoing,
+    }
+
+    response = make_response(
+        jsonify(production_response), 200
+    )
+
+    return response
+
+Route Decorator (@app.route('/productions/<string:title>')):
+
+This approach uses the route decorator @app.route to define the endpoint /productions/<string:title>, which expects a dynamic title parameter in the URL.
+The production function is the route handler for this endpoint. It receives the title parameter as an argument.
+Inside the function, the Production object with a matching title is retrieved from the database using Production.query.filter(Production.title == title).first().
+The attributes of the retrieved production are extracted and stored in a dictionary (production_response).
+The jsonify function is used to convert the production_response dictionary into a JSON response.
+The make_response function is then used to create an HTTP response with the JSON response as the response body. The response is returned to the client.
+In summary, the first approach uses class-based resources with methods corresponding to different HTTP verbs, while the second approach uses route decorators and functions to handle requests for specific endpoints. Both approaches can be used to achieve similar results, but the choice between them depends on the specific requirements and design preferences of your application.

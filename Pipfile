@@ -14,6 +14,7 @@ jsonify = "*"
 flask-migrate = "*"
 sqlalchemy-serializer = "*"
 importlib-resources = "*"
+flask-restful = "*"
 
 [dev-packages]
 ipdb = "*"
