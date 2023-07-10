@@ -15,6 +15,9 @@ flask-migrate = "*"
 sqlalchemy-serializer = "*"
 importlib-resources = "*"
 flask-restful = "*"
+flask-cors = "*"
+gunicorn = "*"
+honcho = "*"
 
 [dev-packages]
 ipdb = "*"

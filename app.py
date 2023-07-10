@@ -8,10 +8,14 @@ from flask_restful import Api, Resource
 # error Handling
 from werkzeug.exceptions import NotFound
 
+# import Cors from flask_cors
+from flask_cors import CORS
+
 from models import db, Production, CastMember
 
 # 🤪  Intialize the App
 app = Flask(__name__)
+CORS(app)
 
 # 🤪  setUp database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
@@ -52,16 +56,19 @@ class Productions(Resource):
         # Retrieve the JSON data from the request from input Form (Frontend Request )
         request_json = request.get_json()
 
-        # Create a new Production object with the data from the request
-        new_production = Production(
-            title=request_json['title'],
-            genre=request_json['genre'],
-            budget=request_json['budget'],
-            image=request_json['image'],
-            director=request_json['director'],
-            description=request_json['description'],
-            ongoing=request_json['ongoing'],
-        )
+        try:
+            # Create a new Production object with the data from the request
+            new_production = Production(
+                title=request_json['title'],
+                genre=request_json['genre'],
+                budget=request_json['budget'],
+                image=request_json['image'],
+                director=request_json['director'],
+                description=request_json['description'],
+                ongoing=request_json['ongoing'],
+            )
+        except ValueError as e:
+            abort(422, "e.args[0]")
 
         # Add the new production to the database session
         db.session.add(new_production)
