@@ -25,7 +25,9 @@ class Production(db.Model, SerializerMixin):
         db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
 
     cast_members = db.relationship('CastMember', backref='production')
-    serialize_rules = ('-cast_members.production', )
+    # serialize_only = ('title',)
+    serialize_rules = ('-cast_members.production',
+                       '-created_at', '-updated_at')
 
     def __repr__(self):
         return f"""
@@ -55,7 +57,9 @@ class CastMember(db.Model, SerializerMixin):
         db.DateTime, server_default=db.func.now(), onupdate=db.func.now())
     production_id = db.Column(db.Integer, db.ForeignKey('productions.id'))
     # production = db.relationship('Production', backref=db.backref('cast_members', lazy=True))
-    serialize_rules = ('-production.cast_members', )
+    # serialize_only = ('name',)
+    serialize_rules = ('-production.cast_members',
+                       '-created_at', '-updated_at')
 
     def __repr__(self):
         return f"""
