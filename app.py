@@ -40,10 +40,7 @@ class Productions(Resource):
 
         # Create a response with the production list and status code 200 (OK)
         response = make_response(
-            {
-                "data_length": len(production_list),
-                "data": production_list
-            },
+            production_list,
             200
         )
         return response
@@ -139,8 +136,26 @@ class ProductionByID(Resource):
 
     # ======== ⏫ Delete=============
 
-    def delete(self, Id):
-        pass
+    def delete(self, id):
+        # Retrieve the production from the database with the given ID
+        production = Production.query.filter_by(id=id).first()
+
+        # If no production is found, raise a NotFound exception with a 404 status code and an error message
+        if not production:
+            abort(404, "The production is not available")
+
+        # Delete the production from the database session
+        db.session.delete(production)
+        db.session.commit()
+
+        response = make_response(
+            # An empty dictionary or any desired response data
+            {"Message": "The Production was Successfully Deleted!!! "},
+            200  # Status code indicating successful deletion, e.g., 200 (OK)
+        )
+
+        # Return the response
+        return response
 
 
 # Add the ProductionByID resource to the API at the "/productions/<int:id>" endpoint
@@ -225,12 +240,56 @@ class CastMemberID(Resource):
     # ======== ⏫ Patch=============
 
     def patch(self, id):
-        pass
+        # Retrieve the cast members from the database with the given ID
+        cast_member = CastMember.query.filter_by(id=id).first()
+
+        # If no cast members are found, raise a NotFound exception with a 404 status code and an error message
+        if not cast_member:
+            abort(404, "The cast member was not found")
+
+        # Retrieve the JSON data from the request FRontend
+        request_json = request.get_json()
+
+        # Update the cast_member object with the values from the request
+        for key in request_json:
+            # Update each attribute of the request_json with its corresponding value
+            setattr(cast_member, key, request_json[key])
+
+        # Add the updated cast members to the database session
+        db.session.add(cast_member)
+        db.session.commit()
+
+        # Create a response with the updated cast members data and status code 201 (Created)
+        response = make_response(
+            cast_member.to_dict(),
+            200
+        )
+
+        # Return the response
+        return response
 
     # ======== ⏫ Delete=============
 
-    def delete(self, Id):
-        pass
+    def delete(self, id):
+        # Retrieve the production from the database with the given ID
+        cast_member = CastMember.query.filter_by(id=id).first()
+
+        # If no production is found, raise a NotFound exception with a 404 status code and an error message
+        if not cast_member:
+            abort(404, "The cast_member is not available")
+
+        # Delete the production from the database session
+        db.session.delete(cast_member)
+        db.session.commit()
+
+        response = make_response(
+            # An empty dictionary or any desired response data
+            {"Message": "The Cast member was Deleted Successfully!!! "},
+            200  # Status code indicating successful deletion, e.g., 200 (OK)
+        )
+
+        # Return the response
+        return response
 
 
 # Add the CastMemberID resource to the API at the "/cast_members/<int:id>" endpoint
