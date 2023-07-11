@@ -78,3 +78,18 @@ class CastMember(db.Model, SerializerMixin):
             Role:{self.role}, 
             Production_id:{self.production_id}
         """
+
+# class User(db.Model):
+#     __tablename__ = 'users'
+
+#     id = Column(Integer, primary_key=True)
+#     name = Column(String(50), nullable=False)
+#     email = Column(String(100), unique=True, nullable=False)
+#     # Add more columns as per your requirements, such as password, date of birth, etc.
+
+#     def __repr__(self):
+#         return f"""
+#             id: {self.id},
+#             name: {self.name},
+#             email: {self.email}
+#         """
