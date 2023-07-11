@@ -18,6 +18,7 @@ flask-restful = "*"
 flask-cors = "*"
 gunicorn = "*"
 honcho = "*"
+flask-bcrypt = "*"
 
 [dev-packages]
 ipdb = "*"

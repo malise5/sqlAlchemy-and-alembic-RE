@@ -11,11 +11,14 @@ from werkzeug.exceptions import NotFound
 # import Cors from flask_cors
 from flask_cors import CORS
 
-from models import db, Production, CastMember
+from models import db, Production, CastMember, User
+from flask_bcrypt import Bcrypt
 
 # 🤪  Intialize the App
 app = Flask(__name__)
 CORS(app)
+bcrypt = Bcrypt(app)
+
 
 # 🤪  setUp database
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
@@ -338,39 +341,91 @@ class Users(Resource):
 # Add the Users resource to the API with the specified endpoint
 api.add_resource(Users, "/user")
 
+# ===================================Signup===================================================
+
+
+class Signup(Resource):
+    def post(self):
+        # Get the JSON data from the request
+        from_json = request.get_json()
+
+        # Create a new User instance with the provided name and email
+        new_user = User(
+            name=from_json['name'],
+            email=from_json['email']
+        )
+
+        # Set the password hash for the new user
+        new_user.password_hash = from_json['password']
+
+        # Add the new user to the database session
+        db.session.add(new_user)
+
+        # Commit the changes to the database
+        db.session.commit()
+
+        response = make_response(
+            new_user.to_dict(),
+            201
+        )
+        return response
+
+
+api.add_resource(Signup, "/signup")
+
 # =====================================LOGIN===============================================
 
 
 class Login(Resource):
     def post(self):
-        user = User.query.filter_by(name=request.get_json()["name"]).first()
-        session['user_id'] = user.id
-        response = make_response(
-            user.to_json(),
-            200
-        )
-        return response
+        try:
+            # Retrieve the JSON data from the request
+            from_json = request.get_json()
+
+            # Retrieve the user from the database based on the provided name
+            user = User.query.filter_by(name=from_json["name"]).first()
+
+            # Authenticate the user by checking the password hash
+            if user.authenticate(from_json["password"]):
+                # Store the user_id in the session
+                session["user_id"] = user.id
+
+                # Create a response with the user data as JSON
+                response = make_response(
+                    user.to_json(),
+                    200
+                )
+                return response
+        except:
+            # Raise an HTTP 401 Unauthorized error for incorrect user authentication
+            abort(401, "Unauthorized error for incorrect user authentication")
 
 
+# Register the Login resource to the "/login" endpoint
 api.add_resource(Login, "/login")
 
-# ==================================AuthorizedSession====================================================
+
+# ==================================Authorized Session====================================================
 
 
 class AuthorizedSession(Resource):
     def get(self):
-        user = User.query.filter_by(id=session.get('user_id')).first()
+        try:
+            # Retrieve the user from the database based on the stored user_id in the session
+            user = User.query.filter_by(id=session['user_id']).first()
 
-        if user:
+            # Create a response with the user data as a dictionary
             response = make_response(
                 user.to_dict(),
                 200
             )
             return response
-        else:
-            abort(404, "Unauthorized")
+        except:
+            # Raise an HTTP 404 Not Found error for unauthorized access
+            abort(404, "Unauthorized Access")
 
 
+# Register the AuthorizedSession resource to the "/authorized" endpoint
 api.add_resource(AuthorizedSession, "/authorized")
 
 

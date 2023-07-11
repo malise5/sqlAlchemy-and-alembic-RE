@@ -1,5 +1,5 @@
 from app import app
-from models import db, Production, CastMember
+from models import db, Production, CastMember, User
 
 
 with app.app_context():
@@ -87,3 +87,17 @@ with app.app_context():
     # Add all the cast members to the db session
     db.session.add_all(cast_members)
     db.session.commit()
+
+    # Create an instance of User with a sample user
+    user = User(
+        name='John Doe',
+        email='john.doe@example.com',
+        password_hash="cow",
+        admin=True
+    )
+
+    # Add the user to the db session
+    db.session.add(user)
+    db.session.commit()
+
+    print("Finished.....🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 🍀 ")
