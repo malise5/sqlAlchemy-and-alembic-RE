@@ -116,7 +116,10 @@ class User(db.Model, SerializerMixin):
     @password_hash.setter
     def password_hash(self, password):
         # Generate and set the password hash based on the provided password
-        password_hash = bcrypt.generate_password_hash(password.encode('utf-8'))
+        # Convert the password to a string if it's an integer
+        password_str = str(password)
+        password_hash = bcrypt.generate_password_hash(
+            password_str.encode('utf-8'))
         self._password_hash = password_hash.decode('utf-8')
 
     def authenticate(self, password):

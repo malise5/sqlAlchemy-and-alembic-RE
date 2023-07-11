@@ -392,7 +392,8 @@ class Login(Resource):
 
                 # Create a response with the user data as JSON
                 response = make_response(
-                    user.to_json(),
+                    # Update this line with the desired user attribute
+                    user.to_dict(),
                     200
                 )
                 return response
@@ -429,7 +430,7 @@ class AuthorizedSession(Resource):
 api.add_resource(AuthorizedSession, "/authorized")
 
 
-# =================LOGOUT==================================================================================
+# ==================================LOGOUT==============================================================
 
 
 # Create a Logout resource
