@@ -6,6 +6,7 @@ from werkzeug.exceptions import NotFound
 from flask_restful import Api, Resource
 from flask_migrate import Migrate
 from flask import Flask, jsonify, make_response, request, abort, session, render_template
+import os
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -16,7 +17,7 @@ load_dotenv()
 
 
 # 🤪  Intialize the App
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 CORS(app)
 bcrypt = Bcrypt(app)
 
@@ -27,7 +28,7 @@ bcrypt = Bcrypt(app)
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # prod
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ, get("DATABASE_URI")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URI")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app.json.compact = False  # configures JSON response to print Indented lines
