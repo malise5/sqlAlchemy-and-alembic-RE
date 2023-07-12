@@ -14,3 +14,5 @@ To initiate and create database:
 
 
     --the run honcho start -Procfile.dev --
+
+    pipenv requirements > requirements.txt   

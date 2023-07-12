@@ -1,18 +1,19 @@
 # 🤪  setUp Imports
-
-from flask import Flask, jsonify, make_response, request, abort, session
-from flask_migrate import Migrate
-
+from flask_bcrypt import Bcrypt
+from models import db, Production, CastMember, User
+from flask_cors import CORS
+from werkzeug.exceptions import NotFound
 from flask_restful import Api, Resource
+from flask_migrate import Migrate
+from flask import Flask, jsonify, make_response, request, abort, session, render_template
+from dotenv import load_dotenv
+load_dotenv()
+
 
 # error Handling
-from werkzeug.exceptions import NotFound
 
 # import Cors from flask_cors
-from flask_cors import CORS
 
-from models import db, Production, CastMember, User
-from flask_bcrypt import Bcrypt
 
 # 🤪  Intialize the App
 app = Flask(__name__)
@@ -21,8 +22,14 @@ bcrypt = Bcrypt(app)
 
 
 # 🤪  setUp database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+# dev
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# prod
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ, get("DATABASE_URI")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 app.json.compact = False  # configures JSON response to print Indented lines
 
 # 🤪  setUp migration and initialize instance with 'db.init)app(app)
